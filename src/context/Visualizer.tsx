@@ -1,8 +1,8 @@
 'use client';
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";
 import { SortingAlgorithmType } from "../shared/types"
-import { MAX_ANIMATION_SPEED } from "@/shared/utils";
+import { MAX_ANIMATION_SPEED, generateRandomNumberFromInterval } from "@/shared/utils";
 
 interface SortingAlgorithmContextType {
     arrayToSort: number[];
@@ -23,13 +23,43 @@ interface SortingAlgorithmContextType {
 const SortingAlgorithmContext = createContext<SortingAlgorithmContextType | undefined>(undefined)
 
 export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNode }) => {
-    const [arrayToSort, setArrayToSort] = useState<number[]>([100, 300, 250, 75])
+    const [arrayToSort, setArrayToSort] = useState<number[]>([])
     const [selectedAlgorithm, setSelectedAlgorithm] = useState<SortingAlgorithmType>("bubble")
     const [isSorting, setIsSorting] = useState<boolean>(false)
     const [animationSpeed, setAnimationSpeed] = useState<number>(MAX_ANIMATION_SPEED)
     const [isAnimationComplete, setIsAnimationComplete] = useState<boolean>(false)
 
-    const resetArrayAndAnimation = () => { }
+
+    useEffect(() => {
+        resetArrayAndAnimation()
+        window.addEventListener("resize", resetArrayAndAnimation);
+
+        return () => {
+            window.removeEventListener("resize", resetArrayAndAnimation)
+        }
+    }, [])
+
+
+    const resetArrayAndAnimation = () => {
+        const contentContainer = document.getElementById('content-container')
+        if (!contentContainer) {
+            return
+        }
+
+        const contentContainerWidth = contentContainer.clientWidth
+        const tempArray: number[] = []
+        const numlines = contentContainerWidth / 8;
+        const containerHeight = window.innerHeight;
+        const maxLineHeight = Math.max(containerHeight - 270, 100);
+        for (let i = 0; i < numlines; i++) {
+            tempArray.push(generateRandomNumberFromInterval(35, maxLineHeight))
+        }
+
+        console.log(tempArray)
+        setArrayToSort(tempArray)
+        setIsAnimationComplete(false)
+        setIsSorting(false)
+    }
 
     const runAniamtion = () => { }
 
