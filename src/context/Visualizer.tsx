@@ -16,7 +16,8 @@ interface SortingAlgorithmContextType {
     isAnimationComplete: boolean,
     setIsAnimationComplete: (isComplete: boolean) => void,
     resetArrayAndAnimation: () => void,
-    runAniamtion: () => void
+    runAniamtion: () => void,
+    requireReset: boolean
 
 }
 
@@ -39,7 +40,7 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
         }
     }, [])
 
-
+    const requireReset = isAnimationComplete || isSorting;
     const resetArrayAndAnimation = () => {
         const contentContainer = document.getElementById('content-container')
         if (!contentContainer) {
@@ -75,7 +76,8 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
         isAnimationComplete,
         setIsAnimationComplete,
         resetArrayAndAnimation,
-        runAniamtion
+        runAniamtion,
+        requireReset
     }
     return <SortingAlgorithmContext.Provider value={value}>{children}</SortingAlgorithmContext.Provider>
 }
