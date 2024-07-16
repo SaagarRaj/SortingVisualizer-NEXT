@@ -1,0 +1,36 @@
+import { SelectOptionsTypes } from "@/shared/types"
+
+type Props = {
+    options: SelectOptionsTypes[],
+    defaultValue: string,
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void,
+    isDisabled?: boolean
+}
+
+const Select = ({ options, defaultValue, onChange, isDisabled = false }: Props) => {
+    return (
+        <div className="inline-block relative w-48">
+            <select
+                defaultValue={defaultValue}
+                onChange={onChange}
+                disabled={isDisabled}
+                className="block  appearance-none h-8 w-full text-sm bg-black border-system-purple20 border px-4 py-1 pr-8 rounded-lg shadow leading-tight focus:outline-none focus:shadow-outline text-gray-300">
+                {options.map((options) => (<option key={options.value} value={options.value}>{options.label}</option>))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                <svg
+                    className="fill-gray-300 h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+            </div>
+        </div>
+    )
+}
+
+export default Select
+
+
+
