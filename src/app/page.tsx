@@ -19,16 +19,22 @@ export default function Home() {
     setAnimationSpeed,
     selectedAlgorithm,
     setSelectedAlgorithm,
-    requireReset
+    requireReset,
+    resetArrayAndAnimation
   } = useSortingAlgorithmContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedAlgorithm(e.target.value as SortingAlgorithmType)
   }
 
-  useEffect(() => {
-    console.log("Selected Algorithm", selectedAlgorithm)
-  }, [selectedAlgorithm])
+  const handlePlay = () => {
+    if (requireReset) {
+      resetArrayAndAnimation();
+      return;
+    }
+    //generate animation array 
+  }
+
   return (
     <main className="font-montserrat absolute top-0 h-screen  inset-0 -z-10  w-full items-center [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] ">
       <div className="flex h-full justify-center">

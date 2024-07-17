@@ -1,7 +1,7 @@
 'use client';
 import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";
-import { SortingAlgorithmType } from "../shared/types"
+import { SortingAlgorithmType, AnimationArrayType } from "../shared/types"
 import { MAX_ANIMATION_SPEED, generateRandomNumberFromInterval } from "@/shared/utils";
 
 interface SortingAlgorithmContextType {
@@ -16,7 +16,7 @@ interface SortingAlgorithmContextType {
     isAnimationComplete: boolean,
     setIsAnimationComplete: (isComplete: boolean) => void,
     resetArrayAndAnimation: () => void,
-    runAniamtion: () => void,
+    runAniamtion: (animation: AnimationArrayType) => void,
     requireReset: boolean
 
 }
@@ -62,7 +62,49 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
         setIsSorting(false)
     }
 
-    const runAniamtion = () => { }
+    const runAniamtion = (animations: AnimationArrayType) => {
+        setIsSorting(true);
+
+        const inverseSpeed = (1 / animationSpeed) * 200;
+        const arrayLines = document.getElementsByClassName("array-line") as HTMLCollectionOf<HTMLElement>;
+
+        const updateClassList = (
+            indexes: number[],
+            addClassName: string,
+            removeClassName: string
+        ) => {
+            indexes.forEach((index) => {
+                arrayLines[index].classList.add(addClassName);
+                arrayLines[index].classList.remove(removeClassName);
+            })
+        }
+
+        const updateHeightValue = (
+            lineIndex: number,
+            newHeight: number | undefined
+        ) => {
+            if (newHeight === undefined) return;
+            arrayLines[lineIndex].style.height = `${newHeight}px`;
+        }
+
+        animations.forEach((animation, index) => {
+            setTimeout(() => {
+                const [values, isSwap] = animation;
+
+                if (!isSwap) {
+                    updateClassList(values, "changed-line-color", "default-line-color");
+                    setTimeout(() => {
+                        updateClassList(values, "default-line-color", "changed-line-color");
+                    }, inverseSpeed)
+                } else {
+                    const [lineIndex, newHeight] = values;
+                    updateHeightValue(lineIndex, newHeight)
+                }
+
+            }, index * inverseSpeed)
+        })
+
+    }
 
     const value = {
         arrayToSort,

@@ -14,6 +14,6 @@ export const algorithmOptions = [
     { label: "Merge", value: "merge" },
     { label: "Insertion", value: "insertion" },
     { label: "Selection", value: "selection" },
-]
+];
 
 
