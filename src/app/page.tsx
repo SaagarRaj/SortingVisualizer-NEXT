@@ -64,13 +64,13 @@ export default function Home() {
             <div className="hidden sm:flex absolute top-[120%] left-0 w-full">
               <div className="flex w-full text-white p-4 rounded border border-gray-500 bg-black bg-opacity-10 gap-6">
                 <div className="flex flex-col items-start justify-start w-3/4 ">
-                  <h3 className="text-lg">{sortingAlgorithmsData[selectedAlgorithm].title}</h3>
+                  <h3 >{sortingAlgorithmsData[selectedAlgorithm].title}</h3>
                   <p className="text-sm text-gray-400 pt-2">{sortingAlgorithmsData[selectedAlgorithm].description}</p>
 
                 </div>
 
                 <div className="flex flex-col items-start justify-start w-1/4 ">
-                  <h3 className="text-lg">Time Complexity</h3>
+                  <h3 >Time Complexity</h3>
                   <div className="flex flex-col gap-2">
                     <p className="flex w-full text-sm text-gray-500">
                       <span className="w-28">Worst Case:</span>

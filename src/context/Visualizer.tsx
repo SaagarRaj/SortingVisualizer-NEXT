@@ -61,16 +61,18 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
         setIsAnimationComplete(false)
         setIsSorting(false)
 
+        // Clear all timeouts
         const highestId = window.setTimeout(() => {
             for (let i = highestId; i >= 0; i--) {
                 window.clearInterval(i);
             }
         }, 0);
 
+        // Reset all array lines to default state
         setTimeout(() => {
             const arrLines = document.getElementsByClassName("array-line");
             for (let i = 0; i < arrLines.length; i++) {
-                arrLines[i].classList.remove("change-line-color");
+                arrLines[i].classList.remove("changed-line-color", "pulse-animation");
                 arrLines[i].classList.add("default-line-color");
             }
         }, 0);
@@ -88,8 +90,10 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
             removeClassName: string
         ) => {
             indexes.forEach((index) => {
-                arrayLines[index].classList.add(addClassName);
-                arrayLines[index].classList.remove(removeClassName);
+                if (arrayLines[index]) {
+                    arrayLines[index].classList.add(addClassName);
+                    arrayLines[index].classList.remove(removeClassName);
+                }
             })
         }
 
@@ -97,7 +101,7 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
             lineIndex: number,
             newHeight: number | undefined
         ) => {
-            if (newHeight === undefined) return;
+            if (newHeight === undefined || !arrayLines[lineIndex]) return;
             arrayLines[lineIndex].style.height = `${newHeight}px`;
         }
 
@@ -121,19 +125,28 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
         const finalTimeout = animations.length * inverseSpeed;
 
         setTimeout(() => {
+            // First, ensure all bars are in default state
             Array.from(arrayLines).forEach((line) => {
-                line.classList.add("pulse-animation", "changed-line-color");
-                line.classList.remove("default-line-color");
+                line.classList.remove("changed-line-color", "pulse-animation");
+                line.classList.add("default-line-color");
             });
 
+            // Then apply the completion animation
             setTimeout(() => {
                 Array.from(arrayLines).forEach((line) => {
-                    line.classList.remove("pulse-animation", "changed-line-color");
-                    line.classList.add("default-line-color");
+                    line.classList.add("pulse-animation", "changed-line-color");
+                    line.classList.remove("default-line-color");
                 });
-                setIsSorting(false);
-                setIsAnimationComplete(true);
-            }, 1000);
+
+                setTimeout(() => {
+                    Array.from(arrayLines).forEach((line) => {
+                        line.classList.remove("pulse-animation", "changed-line-color");
+                        line.classList.add("default-line-color");
+                    });
+                    setIsSorting(false);
+                    setIsAnimationComplete(true);
+                }, 1000);
+            }, 50); // Small delay to ensure reset is complete
         }, finalTimeout);
     };
 
