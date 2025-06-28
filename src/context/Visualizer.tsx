@@ -17,8 +17,9 @@ interface SortingAlgorithmContextType {
     setIsAnimationComplete: (isComplete: boolean) => void,
     resetArrayAndAnimation: () => void,
     runAniamtion: (animation: AnimationArrayType) => void,
-    requireReset: boolean
-
+    requireReset: boolean,
+    showConfetti: boolean,
+    setShowConfetti: (show: boolean) => void
 }
 
 const SortingAlgorithmContext = createContext<SortingAlgorithmContextType | undefined>(undefined)
@@ -29,6 +30,7 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
     const [isSorting, setIsSorting] = useState<boolean>(false)
     const [animationSpeed, setAnimationSpeed] = useState<number>(MAX_ANIMATION_SPEED)
     const [isAnimationComplete, setIsAnimationComplete] = useState<boolean>(false)
+    const [showConfetti, setShowConfetti] = useState<boolean>(false)
 
 
     useEffect(() => {
@@ -51,7 +53,12 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
         const tempArray: number[] = []
         const numlines = contentContainerWidth / 8;
         const containerHeight = window.innerHeight;
-        const maxLineHeight = Math.max(containerHeight - 270, 100);
+
+        // Better height calculation for mobile
+        const isMobile = window.innerWidth < 640; // sm breakpoint
+        const headerHeight = isMobile ? 200 : 270; // Account for mobile layout
+        const maxLineHeight = Math.max(containerHeight - headerHeight, 100);
+
         for (let i = 0; i < numlines; i++) {
             tempArray.push(generateRandomNumberFromInterval(35, maxLineHeight))
         }
@@ -60,6 +67,7 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
         setArrayToSort(tempArray)
         setIsAnimationComplete(false)
         setIsSorting(false)
+        setShowConfetti(false)
 
         // Clear all timeouts
         const highestId = window.setTimeout(() => {
@@ -145,6 +153,12 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
                     });
                     setIsSorting(false);
                     setIsAnimationComplete(true);
+                    setShowConfetti(true);
+
+                    // Hide confetti after 3 seconds
+                    setTimeout(() => {
+                        setShowConfetti(false);
+                    }, 3000);
                 }, 1000);
             }, 50); // Small delay to ensure reset is complete
         }, finalTimeout);
@@ -163,7 +177,9 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
         setIsAnimationComplete,
         resetArrayAndAnimation,
         runAniamtion,
-        requireReset
+        requireReset,
+        showConfetti,
+        setShowConfetti
     }
     return <SortingAlgorithmContext.Provider value={value}>{children}</SortingAlgorithmContext.Provider>
 }
