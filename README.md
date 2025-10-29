@@ -2,7 +2,8 @@
 
 An interactive web application that visualizes various sorting algorithms in real-time. Watch as different sorting strategies work their magic through animated bar charts, making complex algorithms easy to understand and learn.
 
-![Sorting Visualizer Demo](https://via.placeholder.com/800x400/000000/FFFFFF?text=Sorting+Visualizer+Demo)
+<img width="1297" height="939" alt="Screenshot 2025-10-28 at 10 01 11 PM" src="https://github.com/user-attachments/assets/29a42f4c-672d-4697-9062-d6070bf9a2ce" />
+
 
 ## 🌟 Features
 
