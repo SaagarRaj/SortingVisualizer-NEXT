@@ -56,7 +56,7 @@ export const SortingAlgorithmProvider = ({ children }: { children: React.ReactNo
 
         // Better height calculation for mobile
         const isMobile = window.innerWidth < 640; // sm breakpoint
-        const headerHeight = isMobile ? 200 : 270; // Account for mobile layout
+        const headerHeight = isMobile ? window.innerHeight * 0.42 : 270; // 40% + 2% padding for mobile
         const maxLineHeight = Math.max(containerHeight - headerHeight, 100);
 
         for (let i = 0; i < numlines; i++) {

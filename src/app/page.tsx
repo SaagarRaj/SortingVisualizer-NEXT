@@ -43,11 +43,12 @@ export default function Home() {
   }
 
   return (
-    <main className="font-montserrat absolute top-0 h-screen  inset-0 -z-10  w-full items-center [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] ">
+    <main className="font-montserrat absolute top-0 h-screen inset-0 -z-10 w-full items-center [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]">
       <Confetti isVisible={showConfetti} />
       <div className="flex h-full justify-center">
         <div id="content-container" className="flex max-w-[1080px] w-full flex-col lg:px-0 px-4">
-          <div className="min-h-[66px] relative flex flex-col sm:flex-row items-center justify-between w-full gap-4 py-2">
+          {/* Mobile Layout: 40% for controls and description */}
+          <div className="h-[40vh] sm:h-auto sm:min-h-[66px] relative flex flex-col sm:flex-row items-center justify-between w-full gap-4 py-2">
             <h1 className="text-gray-200 text-xl sm:text-2xl font-light">Sorting Visualizer</h1>
 
             <div className="flex items-center justify-center gap-2 sm:gap-4">
@@ -63,6 +64,7 @@ export default function Home() {
               </button>
             </div>
 
+            {/* Info Panel - Now visible on all screens */}
             <div className="w-full mt-4 sm:mt-0 sm:absolute sm:top-[120%] sm:left-0">
               <div className="flex flex-col sm:flex-row w-full text-white p-3 sm:p-4 rounded border border-gray-500 bg-black bg-opacity-10 gap-4 sm:gap-6">
                 <div className="flex flex-col items-start justify-start w-full sm:w-3/4">
@@ -91,15 +93,22 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative h-[calc(100vh-200px)] sm:h-[calc(100vh-66px)] w-full">
+          {/* 2% padding */}
+          <div className="h-[2vh] sm:hidden"></div>
+
+          {/* Mobile Layout: 50% for bars */}
+          <div className="relative h-[50vh] sm:h-[calc(100vh-66px)] w-full">
             <div className="absolute bottom-[32px] w-full mx-auto left-0 right-0 flex justify-center items-end">
               {arrayToSort.map((value, index) => (
                 <div key={index} className="array-line relative w-1 mx-0.5 shadow-lg rounded-lg default-line-color" style={{ height: `${value}px` }}></div>
               ))}
             </div>
           </div>
+
+          {/* Remaining padding (8%) */}
+          <div className="h-[8vh] sm:hidden"></div>
         </div>
       </div>
-    </main >
+    </main>
   );
 }
